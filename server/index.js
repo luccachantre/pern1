@@ -11,7 +11,7 @@ app.use(express.json()); //this allows us to use req.body
 
 //create a todo
 app.post("/todos", async(req, res) => {
-    //async is... not quite sure
+    //async is... not quite sure (asynchronous)
     //but it allows us to use await, 
     //which is where the program will only continue after the function completes
     //actually await pauses that function until it gets what it needs to continue, 
@@ -37,7 +37,7 @@ app.post("/todos", async(req, res) => {
 
         res.json(newTodo.rows[0]);
     } catch (err) {
-        console.log(err.message);
+        console.error(err.message);
     }
 
 });
@@ -48,14 +48,15 @@ app.get("/todos", async(req, res) => {
         const allTodos = await pool.query("SELECT * FROM todo");
         res.json(allTodos.rows);
     } catch (err) {
-        console.log(err.message)
+        console.error(err.message)
     }
 });
 
 //get a (single/specific) todo
 app.get("/todos/:id", async(req, res) => { 
     try {
-        const { id } = req.params;
+        //console.log(req.params);
+        const { id } = req.params; 
         const todo = await pool.query(
             "SELECT * FROM todo WHERE todo_id = $1",
             [id]
@@ -63,13 +64,37 @@ app.get("/todos/:id", async(req, res) => {
         
         res.json(todo.rows[0]);
     } catch (err) {
-        console.log(err.message);
+        console.error(err.message);
     }
 });
 
 //update a todo
+app.put("/todos/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { description } = req.body;
+        const updateTodo = await pool.query(
+            "UPDATE todo SET description = $1 WHERE todo_id = $2", 
+            [description, id]
+        );
+        //res.json(updateTodo.rows[0]); //this is what I thought it would be
+        res.json("Todo was updated!"); //but the video did this instead
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 //delete a todo
+app.delete("/todos/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteTodo = await pool.query("DELETE FROM todo WHERE todo_id = $1", [id]);
+        //res.json(deleteTodo.rows[0]);
+        res.json("Todo was deleted!");
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 app.listen(5000, () => {
     console.log("Dude! Server has started on port 5000");
