@@ -1,7 +1,25 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 const ListTodos = () => {
-    return <Fragment>
+
+    const getTodos = async () => {
+        try {
+            
+            const response = await fetch("http://localhost:5000/todos"); //by default fetch makes a get request
+            const jsonData = await response.json();
+            //we do response.json instead of just response because the response body is a stream
+            //.json() is a built in function that parses that stream into a JS object that we can interact with and use
+            console.log(jsonData);
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    useEffect(() => {
+        getTodos();
+    })
+
+    return (<Fragment>
         <table class="table table-dark table-striped mt-5 text-center">
             <thead>
             <tr>
@@ -18,7 +36,7 @@ const ListTodos = () => {
             </tr> */}
             </tbody>
         </table>
-    </Fragment>;
+    </Fragment>);
 }
 
 export default ListTodos;
