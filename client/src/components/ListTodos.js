@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useState } from "react";
 
 const ListTodos = () => {
 
+    const [todos, setTodos] = useState([]);
+
     const getTodos = async () => {
         try {
             
@@ -9,7 +11,7 @@ const ListTodos = () => {
             const jsonData = await response.json();
             //we do response.json instead of just response because the response body is a stream
             //.json() is a built in function that parses that stream into a JS object that we can interact with and use
-            console.log(jsonData);
+            setTodos(jsonData);
         } catch (err) {
             console.error(err.message);
         }
@@ -17,7 +19,9 @@ const ListTodos = () => {
 
     useEffect(() => {
         getTodos();
-    })
+    }, []);
+
+    //console.log(todos);
 
     return (<Fragment>
         <table class="table table-dark table-striped mt-5 text-center">
