@@ -4,6 +4,14 @@ const ListTodos = () => {
 
     const [todos, setTodos] = useState([]);
 
+    const deleteTodo = async (id) => {
+        try {
+            const deleteTodo = await fetch(`http://local:5000/todos/${id}`)
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
     const getTodos = async () => {
         try {
             
@@ -39,11 +47,11 @@ const ListTodos = () => {
                 <td>john@example.com</td>
             </tr> */}
             {todos.map(todo => (
-                <tr>
+                <tr key={todo.todo_id}>
                     <td>{todo.description}</td>
                     <td>Edit</td>
                     <td>
-                        <button className="btn btn-danger">Delete</button>
+                        <button className="btn btn-danger" onClick={() => deleteTodo(todo.todo_id)}>Delete</button>
                     </td>
                 </tr>
             ))}
