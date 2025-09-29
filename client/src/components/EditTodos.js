@@ -1,14 +1,14 @@
 import React, { Fragment, useState } from "react";
 
 const EditTodo = ({ todo }) => {
-    console.log(todo);
+    const [description, setDescription] = useState(todo.description);
     return (
         <Fragment>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#id${todo.todo_id}`}>
             Edit
           </button>
 
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id={`id${todo.todo_id}`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -16,7 +16,7 @@ const EditTodo = ({ todo }) => {
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <input type='text' className="form-control" />
+                  <input type='text' className="form-control" value={description}/>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
