@@ -8,7 +8,13 @@ const EditTodo = ({ todo }) => {
       e.preventDefault();
       try {
         const body = { description };
-        const response = await fetch()
+        const response = await fetch(`http://localhost:5000/todos/${todo.todo_id}`, {
+          method: "PUT",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(body)
+        })
+
+        console.log(response)
       } catch (err) {
         console.error(err.message);
       }
@@ -31,8 +37,8 @@ const EditTodo = ({ todo }) => {
                   <input type='text' className="form-control" value={description} onChange={e => setDescription(e.target.value)} />
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                  <button type="button" class="btn btn-primary" onClick={e => updateDescription(e)} data-bs-dismiss="modal" aria-label="Close">Save changes</button>
                 </div>
               </div>
             </div>
